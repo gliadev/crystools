@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Claude Code status line — powerline style + atomic palette + Nerd Font
 
+command -v jq &>/dev/null || exit 0
+
 input=$(cat)
 
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
@@ -50,8 +52,8 @@ fi
 # Current time
 cur_time=$(date +%H:%M)
 
-# Icons: nerd | emoji | none (via STATUSLINE_ICONS env var)
-case "${STATUSLINE_ICONS:-emoji}" in
+# Icons: nerd | emoji | none (via CRYSTOOLS_SL_ICONS env var)
+case "${CRYSTOOLS_SL_ICONS:-emoji}" in
   nerd)
     PL=''   PLR=''
     ICO_DIR='󰝰'  ICO_GIT='󰘬'  ICO_MODEL='󱙺'  ICO_CTX='󰾆'
@@ -110,13 +112,13 @@ if [ -n "$used_pct" ]; then
   used_int=${used_pct%.*}
   if [ "$used_int" -ge 75 ]; then
     bar_fill="255;50;80"
-    [ "${STATUSLINE_ICONS:-emoji}" = "nerd" ] && ICO_CTX='󰓅'
+    [ "${CRYSTOOLS_SL_ICONS:-emoji}" = "nerd" ] && ICO_CTX='󰓅'
   elif [ "$used_int" -ge 50 ]; then
     bar_fill="255;200;0"
-    [ "${STATUSLINE_ICONS:-emoji}" = "nerd" ] && ICO_CTX='󰾅'
+    [ "${CRYSTOOLS_SL_ICONS:-emoji}" = "nerd" ] && ICO_CTX='󰾅'
   else
     bar_fill="0;200;255"
-    [ "${STATUSLINE_ICONS:-emoji}" = "nerd" ] && ICO_CTX='󰾆'
+    [ "${CRYSTOOLS_SL_ICONS:-emoji}" = "nerd" ] && ICO_CTX='󰾆'
   fi
   bar_empty="60;60;80"
   bar_w=10
@@ -129,14 +131,14 @@ if [ -n "$used_pct" ]; then
   for ((i=0; i<remaining; i++)); do empty_str+="-"; done
   seg_text="\033[38;2;${bar_fill}m${fill_str}${pct_text}\033[38;2;${bar_empty}m${empty_str}"
   ctx_sep=" "
-  [ "${STATUSLINE_ICONS:-emoji}" != "nerd" ] && ctx_sep=""
+  [ "${CRYSTOOLS_SL_ICONS:-emoji}" != "nerd" ] && ctx_sep=""
   seg "" "${bar_fill}" "${ICO_CTX}${ctx_sep}[${seg_text}\033[38;2;${bar_fill}m]"
 fi
 
 # Directory (neon orange)
 if [ -n "$ICO_DIR" ]; then
   seg "" "220;190;130" "${ICO_DIR} ${short_dir}"
-elif [ "${STATUSLINE_ICONS:-emoji}" = "none" ]; then
+elif [ "${CRYSTOOLS_SL_ICONS:-emoji}" = "none" ]; then
   seg "" "220;190;130" "/${short_dir}"
 else
   seg "" "220;190;130" "${short_dir}"
@@ -198,7 +200,7 @@ if [ -n "$rate_5h" ]; then
   for ((i=0; i<rremaining; i++)); do rempty_str+="-"; done
   rseg_text="\033[38;2;${rbar_fill}m${rfill_str}${rpct_text}\033[38;2;${rbar_empty}m${rempty_str}"
   rate_ico=""
-  case "${STATUSLINE_ICONS:-emoji}" in
+  case "${CRYSTOOLS_SL_ICONS:-emoji}" in
     nerd) rate_ico='󰔟 ' ;;
     emoji) rate_ico='⏳' ;;
   esac
