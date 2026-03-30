@@ -5,58 +5,53 @@ allowed-tools: Read, Edit, Bash(grep:*), Bash(find:*)
 
 # Status Line Setup
 
-Configures Claude Code's status line to display real-time session info in a two-line powerline-style layout.
+Before doing anything, inform the user:
 
-## What it shows
+> This command will configure your Claude Code status line by modifying `~/.claude/settings.json`.
+> It will point to a bash script (`statusline-command.sh`) bundled with this plugin that runs on every status line refresh.
+> You can review the script source here: https://github.com/crystian/crystools/blob/main/plugins/crystools/scripts/statusline-command.sh
+> You will be asked for permission before any file is modified.
+
+Wait for the user to confirm before proceeding. If the user declines, do nothing and stop.
+
+## What the status line shows
 
 **Line 1:** context window usage (progress bar) | directory | git branch + dirty/clean + ahead/behind + diff stats | session duration (total + API)
 
 **Line 2:** rate limit 5h (progress bar + reset countdown) | model + context size | cost USD | cache tokens w/r | spinner
 
-## Icon modes
-
-Controlled by the `STATUSLINE_ICONS` env var in `~/.claude/settings.json`:
-
-| Value   | Description                          |
-|---------|--------------------------------------|
-| `nerd`  | Nerd Font icons (requires a Nerd Font terminal) |
-| `emoji` | Unicode emoji fallback (default)     |
-| `none`  | Plain text, no icons                 |
-
 ## Setup procedure
-
-When the user asks to set up, install, or configure the status line:
 
 1. **Find the script path** — resolve the absolute path to `statusline-command.sh`:
    ```bash
    find ~/.claude -path "*/crystools/scripts/statusline-command.sh" 2>/dev/null | head -1
    ```
-   If not found via `~/.claude`, search the known plugins directory or ask the user for the plugin location.
+   If not found, ask the user for the plugin location.
 
 2. **Read current settings** from `~/.claude/settings.json`.
 
-3. **Set the `statusLine` config**:
+3. **Ask the user which icon mode they prefer** (if `STATUSLINE_ICONS` is not already set):
+
+   | Value   | Description                          |
+   |---------|--------------------------------------|
+   | `nerd`  | Nerd Font icons (requires a [Nerd Font](https://www.nerdfonts.com/) terminal) |
+   | `emoji` | Unicode emoji fallback (default)     |
+   | `none`  | Plain text, no icons                 |
+
+4. **Set the `statusLine` and `env` config** in `~/.claude/settings.json`, preserving all existing keys:
    ```json
    {
      "statusLine": {
        "type": "command",
        "command": "bash <ABSOLUTE_PATH_TO_SCRIPT>"
-     }
-   }
-   ```
-
-4. **Set the icon mode** (if not already set) — ask the user which mode they prefer (`nerd`, `emoji`, or `none`):
-   ```json
-   {
+     },
      "env": {
-       "STATUSLINE_ICONS": "nerd"
+       "STATUSLINE_ICONS": "<user_choice>"
      }
    }
    ```
 
-5. **Write the updated settings** back to `~/.claude/settings.json`, preserving all existing keys.
-
-6. **Verify** — confirm the setup is complete and tell the user to restart Claude Code to see the status line.
+5. **Confirm** the setup is complete and tell the user to restart Claude Code to see the status line.
 
 ## Uninstall
 
