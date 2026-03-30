@@ -5,7 +5,24 @@ allowed-tools: Read, Edit, Bash(grep:*), Bash(find:*)
 
 # Status Line Setup
 
-Before doing anything, inform the user:
+First, read `~/.claude/settings.json` and check if `statusLine` is already configured.
+
+## If already installed
+
+Tell the user the status line is already configured and ask:
+1. Reinstall (reconfigure)
+2. Uninstall (remove status line)
+3. Cancel
+
+If **uninstall**: remove the `statusLine` key and the `STATUSLINE_ICONS` key from `env` in `~/.claude/settings.json`, preserving all other keys. Confirm removal and tell the user to restart Claude Code.
+
+If **cancel**: do nothing and stop.
+
+If **reinstall**: continue with the setup procedure below.
+
+## If not installed
+
+Inform the user:
 
 > This command will configure your Claude Code status line by modifying `~/.claude/settings.json`.
 > It will point to a bash script (`statusline-command.sh`) bundled with this plugin that runs on every status line refresh.
