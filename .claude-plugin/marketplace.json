@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "crystools",
-      "source": "./plugins/crystools",
+      "source": "./",
       "description": "Productivity tools for Claude Code: status line, utilities, and workflow enhancements."
     }
   ]
