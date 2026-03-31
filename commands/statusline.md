@@ -20,6 +20,10 @@ If **cancel**: do nothing and stop.
 
 If **reinstall**: continue with the setup procedure below.
 
+## If on Windows (CMD/PowerShell)
+
+Inform the user that native Windows (CMD/PowerShell) is not supported yet. However, **WSL is fully supported** — this plugin was developed on WSL. If they're using WSL, continue with the setup. Otherwise, do nothing and stop.
+
 ## If not installed
 
 Inform the user:
@@ -50,17 +54,9 @@ Wait for the user to confirm before proceeding. If the user declines, do nothing
 
 ## Setup procedure
 
-1. **Detect the platform** and find the script:
-   - **Linux/macOS**: find `statusline-command.sh`
-   - **Windows**: find `statusline-command.ps1`
-
+1. **Find the script path** — resolve the absolute path to `statusline-command.sh`:
    ```bash
-   # Linux/macOS
    find ~/.claude -name "statusline-command.sh" -path "*/scripts/*" 2>/dev/null | head -1
-   ```
-   ```powershell
-   # Windows
-   Get-ChildItem -Path "$env:USERPROFILE\.claude" -Recurse -Filter "statusline-command.ps1" | Select-Object -First 1 -ExpandProperty FullName
    ```
    If not found, ask the user for the plugin location.
 
@@ -75,24 +71,11 @@ Wait for the user to confirm before proceeding. If the user declines, do nothing
    | `none`  | Plain text, no icons                 |
 
 4. **Set the `statusLine` and `env` config** in `~/.claude/settings.json`, preserving all existing keys:
-   - **Linux/macOS**:
    ```json
    {
      "statusLine": {
        "type": "command",
        "command": "bash <ABSOLUTE_PATH>/statusline-command.sh"
-     },
-     "env": {
-       "CRYSTOOLS_SL_ICONS": "<user_choice>"
-     }
-   }
-   ```
-   - **Windows**:
-   ```json
-   {
-     "statusLine": {
-       "type": "command",
-       "command": "powershell -File <ABSOLUTE_PATH>/statusline-command.ps1"
      },
      "env": {
        "CRYSTOOLS_SL_ICONS": "<user_choice>"

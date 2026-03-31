@@ -33,6 +33,15 @@ Supports three icon modes: **nerd**, **emoji** (default), and **none** (plain te
 
 
 
+## Platform Support
+
+| Platform | Status |
+|----------|--------|
+| **Linux** | Supported |
+| **macOS** | Supported |
+| **WSL** | Supported (developed on WSL) |
+| **Windows (CMD/PowerShell)** | Not supported |
+
 ## Requirements
 
 ### jq
@@ -43,9 +52,6 @@ The status line script requires [jq](https://jqlang.github.io/jq/) to parse JSON
 |----------|---------|
 | **macOS** | `brew install jq` |
 | **Linux / WSL** | `sudo apt install jq` |
-| **Windows (winget)** | `winget install jqlang.jq` |
-| **Windows (choco)** | `choco install jq` |
-| **Windows (scoop)** | `scoop install jq` |
 
 ### git
 
