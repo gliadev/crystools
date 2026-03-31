@@ -94,3 +94,4 @@ To remove: delete the `statusLine` key and the `CRYSTOOLS_SL_ICONS` env var from
 - `jq` must be installed (used by the script to parse JSON input)
 - `git` for branch/status info
 - A Nerd Font-compatible terminal if using `nerd` icon mode
+                
