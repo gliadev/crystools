@@ -33,6 +33,24 @@ Supports three icon modes: **nerd**, **emoji** (default), and **none** (plain te
 
 
 
+## Requirements
+
+### jq
+
+The status line script requires [jq](https://jqlang.github.io/jq/) to parse JSON input.
+
+| Platform | Command |
+|----------|---------|
+| **macOS** | `brew install jq` |
+| **Linux / WSL** | `sudo apt install jq` |
+| **Windows (winget)** | `winget install jqlang.jq` |
+| **Windows (choco)** | `choco install jq` |
+| **Windows (scoop)** | `scoop install jq` |
+
+### git
+
+Required for branch, status, and ahead/behind info.
+
 ## Nerd Font
 
 Install some Nerd Font from the [Nerd Font](https://www.nerdfonts.com/) on your system, and configure your terminal to use it. The status line will automatically use the appropriate icons when `CRYSTOOLS_SL_ICONS` is set to `nerd`.

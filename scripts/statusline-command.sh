@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Claude Code status line — powerline style + atomic palette + Nerd Font
 
-command -v jq &>/dev/null || exit 0
+if ! command -v jq &>/dev/null; then
+  echo "jq not found — install it: https://jqlang.github.io/jq/download/"
+  exit 0
+fi
 
 input=$(cat)
 
