@@ -29,5 +29,3 @@ jq 'del(.statusLine) | if .env then .env |= del(.CRYSTOOLS_SL_ICONS) | if .env =
 echo ""
 echo "  crystools — uninstalled"
 echo ""
-echo "  Removed statusLine and CRYSTOOLS_SL_ICONS from settings.json."
-echo ""

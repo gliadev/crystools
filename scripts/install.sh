@@ -54,7 +54,3 @@ jq --arg cmd "bash $SCRIPT_PATH_SHORT" --arg icons "$ICON_MODE" '
 echo ""
 echo "  crystools v${VERSION} — installed"
 echo ""
-echo "  statusLine → $SCRIPT_PATH_SHORT"
-echo "  icons      → $ICON_MODE"
-echo ""
-echo ""
