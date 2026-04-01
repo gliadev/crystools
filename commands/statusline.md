@@ -4,6 +4,7 @@ allowed-tools: Bash(bash:*), Bash(cat:*), Read, AskUserQuestion
 metadata:
   version: 0.1.20
 ---
+                     
 
 # Status Line Setup
 
