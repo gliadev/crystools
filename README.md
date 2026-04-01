@@ -6,7 +6,7 @@ Claude Code plugin with productivity tools: status line, utilities, and workflow
 
 | Command | Description |
 |---------|-------------|
-| `/crystools:statusline` | Configure a two-line powerline-style status bar with context, git, cost, rate limits, and cache info |
+| `/crystools-statusline:statusline` | Configure a two-line powerline-style status bar with context, git, cost, rate limits, and cache info |
                          
 
 ## Install

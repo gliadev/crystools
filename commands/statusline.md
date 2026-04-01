@@ -83,12 +83,7 @@ Inform the user:
 > You can review the script source here: https://github.com/crystian/crystools/blob/main/scripts/statusline-command.sh
 > You will be asked for permission before any file is modified.
 
-Then show the preview:
-
-```
- 🪟 [▓▓▓32%-------]  📁 myproject  ⎇ main 󰄬 +12 -3  🕐 00:12:34 (00:08:21)
- ⏳[12%--------]  🤖 Opus 4.6 1M  💲 1.23  🔄 TK Cached w/r: 45/120  ⠋
-```
+Then show a **Live Preview** (see Live Preview section below).
 
 ## Icon mode question
 
@@ -121,19 +116,37 @@ Show the script output to the user. Do NOT add any extra commentary, summary, or
 
 ## Help
 
-Show the preview:
+Show a **Live Preview** (see Live Preview section below).
 
-```
- 🪟 [▓▓▓32%-------]  📁 myproject  ⎇ main 󰄬 +12 -3  🕐 00:12:34 (00:08:21)
- ⏳[12%--------]  🤖 Opus 4.6 1M  💲 1.23  🔄 TK Cached w/r: 45/120  ⠋
+Then explain what each segment shows. Use icons matching the configured `CRYSTOOLS_SL_ICONS` mode (from `env` in `~/.claude/settings.json`, default `emoji`):
+
+| Segment | nerd | emoji | none |
+|---|---|---|---|
+| Context window | 󰾆 | 🪟 | — |
+| Directory | 󰝰 | 📁 | — |
+| Git | 󰘬 | ⎇ | — |
+| Duration | 󱑎 | 🕐 | — |
+| Rate limit | 󰔟 | ⏳ | — |
+| Model | 󱙺 | 🤖 | — |
+| Cost | $ | 💲 | — |
+| Cache | 󰑓 | 🔄 | — |
+
+Format each line as `{icon} **Name** — description`:
+- **Context window** — usage progress bar with color thresholds (green < 50%, yellow < 75%, red >= 75%)
+- **Directory** — smart project path (deep paths show `project/…/current`)
+- **Git** — branch name, dirty/clean indicator, ahead/behind upstream, lines added/removed
+- **Duration** — session wall time + API time in parentheses
+- **Rate limit** — 5-hour usage bar with reset countdown
+- **Model** — current model + context window size
+- **Cost** — running session cost in USD
+- **Cache** — tokens written/read from cache
+
+## Live Preview
+
+Generate an accurate preview by running the actual statusline script with sample data. This ensures the preview matches the real output (icons, colors, layout) for the user's configured icon mode.
+
+```bash
+PREVIEW_CWD=$(git rev-parse --show-toplevel 2>/dev/null || find "$(pwd)" -maxdepth 2 -name ".git" -type d 2>/dev/null | head -1 | xargs -r dirname || pwd) && SL_SCRIPT=$(find ~/.claude -name "statusline-command.sh" -path "*crystools*" 2>/dev/null | sort -V | tail -1) && echo '{"workspace":{"current_dir":"'"$PREVIEW_CWD"'"},"model":{"display_name":"Opus 4.6"},"cost":{"total_cost_usd":1.23,"total_duration_ms":45154000,"total_api_duration_ms":30501000,"total_lines_added":12,"total_lines_removed":3},"context_window":{"used_percentage":32,"context_window_size":1000000,"current_usage":{"input_tokens":50000,"output_tokens":10000,"cache_creation_input_tokens":45000,"cache_read_input_tokens":120000}},"rate_limits":{"five_hour":{"used_percentage":12}}}' | bash "$SL_SCRIPT"
 ```
 
-Then explain what each segment shows:
-- 🪟 **Context window** — usage progress bar with color thresholds (green < 50%, yellow < 75%, red >= 75%)
-- 📁 **Directory** — smart project path (deep paths show `project/…/current`)
-- ⎇ **Git** — branch name, dirty/clean indicator, ahead/behind upstream, lines added/removed
-- 🕐 **Duration** — session wall time + API time in parentheses
-- ⏳ **Rate limit** — 5-hour usage bar with reset countdown
-- 🤖 **Model** — current model + context window size
-- 💲 **Cost** — running session cost in USD
-- 🔄 **Cache** — tokens written/read from cache
+The Bash output includes ANSI colors and the correct icons. After running, do NOT re-output the result in a code block — the tool output is already visible to the user.
