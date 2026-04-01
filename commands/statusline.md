@@ -2,10 +2,9 @@
 description: Configure Claude Code status line with context, git, cost, rate limits, and cache info.
 allowed-tools: Bash(bash:*), Bash(cat:*), Read, AskUserQuestion
 metadata:
-  version: 0.1.20
+  version: 0.2.3
 ---
                      
-
 # Status Line Setup
 
 **IMPORTANT: Do NOT use or spawn the `statusline-setup` agent. All steps must be executed directly in this command.**
