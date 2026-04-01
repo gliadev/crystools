@@ -2,7 +2,7 @@
 description: Configure Claude Code status line with context, git, cost, rate limits, and cache info.
 allowed-tools: Bash(bash:*), Bash(cat:*), Read, AskUserQuestion
 metadata:
-  version: 0.2.6
+  version: 0.2.7
 ---
                      
 # Status Line Setup
@@ -28,13 +28,24 @@ Then read `~/.claude/settings.json` and check if a `statusLine` key exists.
 
 If it exists and the command contains "crystools/*/statusline-command.sh":
 
-**Update check**: Extract the version number from the `statusLine.command` path (the segment between `crystools/` and `/scripts/`, e.g. `0.2.4`). Compare it with `metadata.version` from this file's frontmatter. If they differ, output before the AskUserQuestion:
+**Update check**: Extract the version number from the `statusLine.command` path (the segment between `crystools/` and `/scripts/`, e.g. `0.2.4`). Compare it with `metadata.version` from this file's frontmatter. If they differ, output:
 
 ```
 ⬆ Updated! v{installed_version} → v{current_version}
 ```
 
 Then use AskUserQuestion:
+
+- question: "A new version is available. Update now?"
+- header: "Update"
+- options:
+  - label: "Update", description: "Reinstall with the new version"
+  - label: "Cancel", description: "Keep current version"
+
+If **Update**: proceed to the icon mode question and install flow (see below).
+If **Cancel**: stop.
+
+If the versions match (no update), use AskUserQuestion:
 
 - question: "crystools status line is already installed. What do you want to do?"
 - header: "Action"
