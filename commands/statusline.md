@@ -127,25 +127,45 @@ Show the script output to the user. Do NOT add any extra commentary, summary, or
 
 ## Help
 
-Show the preview and segment descriptions with ANSI colors matching the actual statusline. Run this command:
+Read `CRYSTOOLS_SL_ICONS` from `env` in `~/.claude/settings.json` (default `emoji`). Show the matching preview and descriptions using icons from this table:
 
-```bash
-MODE=$(jq -r '.env.CRYSTOOLS_SL_ICONS // "emoji"' ~/.claude/settings.json 2>/dev/null || echo emoji)
-case "$MODE" in
-  nerd)  ctx='󰾆' csep=' ' dir='󰝰' git='󰘬' tm='󱑎' rt='󰔟 ' mdl='󱙺' cst='$' cch='󰑓' ;;
-  emoji) ctx='🪟' csep='' dir='📁' git='⎇' tm='🕐' rt='⏳' mdl='🤖' cst='💲' cch='🔄' ;;
-  *)     ctx='' csep='' dir='' git='' tm='' rt='' mdl='' cst='$' cch='' ;;
-esac
-printf '\033[38;2;0;200;255m %s%s[▓▓▓32%%\033[38;2;60;60;80m----\033[38;2;0;200;255m] \033[0m\033[38;2;220;190;130m %s myproject \033[0m\033[38;2;190;170;220m %s main △  \033[38;2;0;255;140m+12 \033[38;2;255;60;90m-3 \033[0m\033[38;2;160;210;200m %s 12:32:34 (08:28:21) \033[0m\n' "$ctx" "$csep" "$dir" "$git" "$tm"
-printf '\033[38;2;0;255;180m %s[▓12%%\033[38;2;60;60;80m------\033[38;2;0;255;180m] \033[0m\033[38;2;210;170;190m %s Opus 4.6 1M \033[0m\033[38;2;170;210;170m %s 1.23 \033[0m\033[38;2;180;190;210m %s TK Cached w/r: 45/120 \033[0m\033[38;2;0;200;255m ⠋ \033[0m\n\n' "$rt" "$mdl" "$cst" "$cch"
-printf '  \033[38;2;0;200;255m%sContext window\033[0m — usage progress bar (green < 50%%, yellow < 75%%, red >= 75%%)\n' "${ctx:+$ctx }"
-printf '  \033[38;2;220;190;130m%sDirectory\033[0m — smart project path (deep paths show project/…/current)\n' "${dir:+$dir }"
-printf '  \033[38;2;190;170;220m%sGit\033[0m — branch, dirty/clean, ahead/behind, lines +/-\n' "${git:+$git }"
-printf '  \033[38;2;160;210;200m%sDuration\033[0m — session wall time + API time in parentheses\n' "${tm:+$tm }"
-printf '  \033[38;2;0;255;180m%sRate limit\033[0m — 5-hour usage bar with reset countdown\n' "${rt:+${rt% } }"
-printf '  \033[38;2;210;170;190m%sModel\033[0m — current model + context window size\n' "${mdl:+$mdl }"
-printf '  \033[38;2;170;210;170m%sCost\033[0m — running session cost in USD\n' "${cst:+$cst }"
-printf '  \033[38;2;180;190;210m%sCache\033[0m — tokens written/read from cache\n' "${cch:+$cch }"
+| Segment | nerd | emoji | none |
+|---|---|---|---|
+| Context window | 󰾆 | 🪟 | — |
+| Directory | 󰝰 | 📁 | — |
+| Git | 󰘬 | ⎇ | — |
+| Duration | 󱑎 | 🕐 | — |
+| Rate limit | 󰔟 | ⏳ | — |
+| Model | 󱙺 | 🤖 | — |
+| Cost | $ | 💲 | — |
+| Cache | 󰑓 | 🔄 | — |
+
+Show ONLY the preview that matches the configured mode:
+
+**nerd:**
+```
+ 󰾆 [▓▓▓32%----]  󰝰 myproject  󰘬 main △ +12 -3  󱑎 12:32:34 (08:28:21)
+ 󰔟 [▓12%------]  󱙺 Opus 4.6 1M  $ 1.23  󰑓 TK Cached w/r: 45/120  ⠋
 ```
 
-After running, do NOT re-output the result — the tool output is already visible to the user with proper ANSI colors.
+**emoji:**
+```
+ 🪟[▓▓▓32%----]  📁 myproject  ⎇ main △ +12 -3  🕐 12:32:34 (08:28:21)
+ ⏳[▓12%------]  🤖 Opus 4.6 1M  💲 1.23  🔄 TK Cached w/r: 45/120  ⠋
+```
+
+**none:**
+```
+ [▓▓▓32%----]  /myproject  main △ +12 -3  12:32:34 (08:28:21)
+ [▓12%------]  Opus 4.6 1M  $ 1.23  TK Cached w/r: 45/120  ⠋
+```
+
+Then list each segment using the matching icon from the table above:
+- {icon} **Context window** — usage progress bar with color thresholds (green < 50%, yellow < 75%, red >= 75%)
+- {icon} **Directory** — smart project path (deep paths show `project/…/current`)
+- {icon} **Git** — branch, dirty/clean, ahead/behind, lines added/removed
+- {icon} **Duration** — session wall time + API time in parentheses
+- {icon} **Rate limit** — 5-hour usage bar with reset countdown
+- {icon} **Model** — current model + context window size
+- {icon} **Cost** — running session cost in USD
+- {icon} **Cache** — tokens written/read from cache
